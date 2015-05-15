@@ -1,0 +1,22 @@
+
+
+
+# match 1
+README.md:10:
+/home/steve/.emacs.d/slf.el:20:
+README.md:5:asdffj
+
+# match 2
+File "README.md" line 12
+asdfasdfdFile "README.md"...line 23adh...
+File "/home/steve/.emacs.d/slf.el"line 20:
+File "/home/steve/.emacs.d/slf.el" line 20
+
+# match 3
+ in README.md line 10
+0.5:hd58: called from item_form_cgi in /home/steve/.emacs.d/slf.el line 106
+
+# match 4
+:README.md(7):
+something:README.md(7):asdf
+
