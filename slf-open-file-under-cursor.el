@@ -137,8 +137,9 @@ asafd:emacs(22): test line
         (if path
           (setq ret (list path (nth 1 result)))
           (setq ret nil))))
-    (when (called-interactively-p 'interactive)
-      (message "%s" ret))
+    (when (version<= "24" emacs-version)
+      (when (called-interactively-p 'interactive)
+        (message "ret=%s" ret)))
     ret))
 
 (defun slf-find-basename(folder basename)
@@ -151,6 +152,7 @@ location of the file if found, or nil when not found.
     (setq command (concat "find -L " folder " -name " basename))
     (setq result (shell-command-to-string command))
     (setq path (nth 0 (split-string result "\n" t)))
-    (when (called-interactively-p 'interactive)
-      (message "path='%s'" path))
+    (when (version<= "24" emacs-version)
+      (when (called-interactively-p 'interactive)
+        (message "path='%s'" path)))
     path))
