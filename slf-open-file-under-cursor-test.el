@@ -41,15 +41,13 @@
 
 (ert-deftest test-slf-match4-path3 ()
   "Test slf-match4-path"
-  (should (myequal (slf-match4-path ":slf.el(7): ")
-                   (list "/home/steve/.emacs.d/slf.el" "7"))))
+  (should (myequal (slf-match4-path ":test.txt(7): ")
+                   (list "/home/steve/code/slf-open-file-under-cursor/test.txt" "7"))))
 
-
-;; (setq slf-grep-git-root nil)
 
 (ert-deftest test-slf-find-root-folder ()
   "Test slf-find-root-folder"
-  (should (myequal (slf-find-root-folder) "/home/steve/.emacs.d/")))
+  (should (myequal (slf-find-root-folder) "/home/steve/code/slf-open-file-under-cursor/")))
 
 
 (ert-deftest test-slf-file-under-cursor ()
@@ -60,17 +58,16 @@
   (with-temp-buffer
 
     (insert
-"3.4:mh42:gadgets.py(147): template file: tmpls/header
+"3.4:mh42:test.txt(14): template file: tmpls/header
 ./Macintosh/Mac_Terminal.txt:6:Created Friday 20 January 2012
 filename:71:...
 ...File \"filename\"...line 123 ...
 0.5:hd58: called from item_form_cgi in /inet/var_local/git-sandboxes/dev-sflennik1/python/printra/sossite/ItemFormCGI.py line 106
-...:filename(321):...
-...:emacs(308):...
 "
     )
+    (setq slf-base-folder "/home/steve/code/slf-open-file-under-cursor/")
     (goto-line 1)
-    (should (myequal (slf-file-under-cursor) (list "gadgets.py" "147")))
+    (should (myequal (slf-file-under-cursor) (list "/home/steve/code/slf-open-file-under-cursor/test.txt" "14")))
 
     (goto-line 2)
     (should (myequal (slf-file-under-cursor) (list "./Macintosh/Mac_Terminal.txt" "6") "line 2"))
@@ -82,13 +79,8 @@ filename:71:...
     (should (myequal (slf-file-under-cursor) (list "filename" "123")))
 
     (goto-line 5)
-    (should (myequal (slf-file-under-cursor) (list "/inet/var_local/git-sandboxes/dev-sflennik1/python/printra/sossite/ItemFormCGI.py" "106")))
+    (should (myequal (slf-file-under-cursor) (list "/inet/var_local/git-sandboxes/dev-sflennik1/python/printra/sossite/ItemFormCGI.py" "106")))))
 
-    (goto-line 6)
-    (should (myequal (slf-file-under-cursor) (list "filename" "321")))
-
-    (goto-line 6)
-    (should (not (myequal (slf-file-under-cursor) (list "filename" "1"))))))
 
 
 (ert-deftest test-slf-find-basename ()
