@@ -20,3 +20,5 @@ File "/home/steve/.emacs.d/slf.el" line 20
 :README.md(7):
 something:README.md(7):asdf
 
+# match 5
+2015-12-04 12:33:45 README.md(7) testing

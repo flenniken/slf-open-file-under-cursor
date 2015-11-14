@@ -22,16 +22,18 @@
 ;; 2.  ... in filename line 20...
 ;; 3.  ...File \"filename\" line 30...
 ;; 4.  ...:basename(40):...
+;; 5.  YYYY-MM-DD HH:MM:SS basename(40) ...
+
 
 ;; Filename is either a full path or a filename relative to the
 ;; current directory.
 
-;; The fourth verion, \":basename(40)\", supports filenames without
-;; path information. The basename is searched in the base folder and
-;; its subfolders to find the file. It uses the system find command to
-;; search the folder.  For the base folder use the git root folder
-;; relative to the current file if it exists, else use the last base
-;; folder found or when no last folder, prompt for it.
+;; The fourth and fifth version, \":basename(40)\", supports filenames
+;; without path information. The basename is searched in the base
+;; folder and its subfolders to find the file. It uses the system find
+;; command to search the folder.  For the base folder use the git root
+;; folder relative to the current file if it exists, else use the last
+;; base folder found or when no last folder, prompt for it.
 
 ;; You can add support for other formats by adding a regular
 ;; expression and a few lines of code.
@@ -87,11 +89,13 @@ Return a list with the filename and line, or nil when not found.
         ;; Loop though the line patterns. Stop when the first one
         ;; returns a filename.
         (let (functions fun)
-          (setq functions (list 'slf-match1 'slf-match2 'slf-match3 'slf-match4-path))
+          (setq functions (list 'slf-match1 'slf-match2 'slf-match3 'slf_path_match))
           (setq result nil)
           (while (and (not result) functions)
               (setq fun (car functions))
               (setq result (funcall fun string))
+              (when result
+                (message "matching fun = %s" fun))
               (setq functions (cdr functions))))))
     result))
 
@@ -108,8 +112,9 @@ Return a list with the filename and line, or nil when not found.
 "
 ./Macintosh/Mac_Terminal.txt:6:Created Friday 20 January 2012
 filename:71:...
+2015-12-04 12:33:45 README.md(7) testing
 "
-  (slf-matcher "^\\(.*\\):\\([0-9]*\\):" string))
+  (slf-matcher "^\\([^ ]*\\):\\([0-9]*\\):" string))
 
 
 (defun slf-match2(string)
@@ -128,7 +133,11 @@ filename:71:...
 (defun slf-match4(string)
   (slf-matcher ":\\([^:]*\\)(\\([0-9]*\\)):" string))
 
-(defun slf-match4-path(string &optional folder)
+; 2015-11-12 21:53:21 test_logger.py(30) first line
+(defun slf-match5(string)
+  (slf-matcher "....-..-.. ..:..:.. \\([^ ]*\\)(\\([0-9]*\\)) " string))
+
+(defun slf_path_match(string &optional folder)
 "This match method finds a basename in the given string then it
 looks for the basename in the given folder. It returns a list
 with the full path to the file and the line number, or nil when
@@ -142,6 +151,8 @@ asafd:emacs(22): test line
   (interactive "sstring: \nDfolder: ")
   (let (result ret)
     (setq result (slf-match4 string))
+    (when (not result)
+      (setq result (slf-match5 string)))
     ;; (message "result = %s" result)
     (setq ret nil)
     (when result

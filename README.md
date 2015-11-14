@@ -14,11 +14,12 @@ Line formats:
 2.  ... in filename line 20...
 3.  ...File \"filename\" line 30...
 4.  ...:basename(40):...
+5.  2015-11-12 21:53:21 basename.py(30) ...
 
 Filename is either a full path or a filename relative to the
 current directory.
 
-The fourth verion, \":basename(40)\", supports filenames without
+The fourth and fifth verions, supports filenames without
 path information. The basename is searched in the base folder and
 its subfolders to find the file. It uses the system find command
 to search the folder.

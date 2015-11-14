@@ -21,13 +21,18 @@
   (should (myequal (slf-match3 " in f line 6") (list "f" "6")))
   (should (myequal (slf-match3 "in in filename line 65 asdf") (list "filename" "65"))))
 
-
 (ert-deftest test-slf-match4 ()
   "Test slf-match4"
   (should (myequal (slf-match4 "3.4:mh42:gadgets.py(147): template file: tmpls/header") (list "gadgets.py" "147")))
   (should (myequal (slf-match4 ":g(7): ") (list "g" "7")))
   (should (myequal (slf-match4 ":gadgets.py(147): ") (list "gadgets.py" "147"))))
 
+(ert-deftest test-slf-match5 ()
+  "Test slf-match5"
+  (should (myequal (slf-match5 "2015-11-12 21:53:21 test_logger.py(30) first line")
+                   (list "test_logger.py" "30")))
+  (should (myequal (slf-match5 "2015-11-12 21:53:21 logger.py(430) (3)first line")
+                   (list "logger.py" "430"))))
 
 (ert-deftest test-slf-match4-path ()
   "Test slf-match4-path"
@@ -42,6 +47,11 @@
 (ert-deftest test-slf-match4-path3 ()
   "Test slf-match4-path"
   (should (myequal (slf-match4-path ":test.txt(7): ")
+                   (list "/home/steve/code/slf-open-file-under-cursor/test.txt" "7"))))
+
+(ert-deftest test-slf-match4-path4 ()
+  "Test slf-match4-path"
+  (should (myequal (slf-match4-path "2015-11-12 21:53:21 test.txt(7) first")
                    (list "/home/steve/code/slf-open-file-under-cursor/test.txt" "7"))))
 
 
