@@ -22,7 +22,7 @@
 ;; 2.  ... in filename line 20...
 ;; 3.  ...File \"filename\" line 30...
 ;; 4.  ...:basename(40):...
-;; 5.  YYYY-MM-DD HH:MM:SS basename(40) ...
+;; 5.  YYYY-MM-DD HH:MM:SS num basename(40) ...
 
 
 ;; Filename is either a full path or a filename relative to the
@@ -133,9 +133,9 @@ filename:71:...
 (defun slf-match4(string)
   (slf-matcher ":\\([^:]*\\)(\\([0-9]*\\)):" string))
 
-; 2015-11-12 21:53:21 test_logger.py(30) first line
+; 2015-11-12 21:53:21 1234 test.txt(30) first line
 (defun slf-match5(string)
-  (slf-matcher "....-..-.. ..:..:.. \\([^ ]*\\)(\\([0-9]*\\)) " string))
+  (slf-matcher "....-..-.. ..:..:.. [0-9]+ \\([^ ]*\\)(\\([0-9]*\\)) " string))
 
 (defun slf_path_match(string &optional folder)
 "This match method finds a basename in the given string then it
